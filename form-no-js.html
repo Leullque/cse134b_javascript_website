@@ -19,19 +19,30 @@
         input, textarea {
             border: 1px solid var(--main-color);
             border-radius: 6px;
-            width: 60%;
+            color: var(--black-color);
         }
         input:user-invalid, textarea:user-invalid {
             border: 1px solid red;
             border-radius: 6px;
-            width: 60%;
         }
     </style>
+    <noscript>
+        <style>
+        #darkmode_button {
+            display: none;
+        }
+        </style>
+    </noscript>
+    <script src="files/theme.js" defer></script>
     <title>Contact table</title>
 </head>
 <body>
     <header>
         <p>Contact</p>
+        <section id="settings" style="display: flex; align-items: right; gap: 1rem;">
+        <button id="darkmode_button">dark</button>
+        <p style="font-family: 'HandwrittenMarker', sans-serif; white-space: nowrap;">Rosie Wang</p>
+        </section>
     </header>
     <main>
         <h1>Contact Form</h1>

@@ -3,6 +3,10 @@
   --content-font: Arial, Helvetica, sans-serif;
   --base-font-size: 1rem;
   --card-color: color(display-p3 0.941 0.937 0.847);
+  --paragraph-color: black;
+  --white-color: white;
+  --black-color: black;
+  --grey-color: grey;
 }
 
 @supports not (color: color(display-p3 1 1 1)) {
@@ -13,20 +17,30 @@
 
 @property --main-color {
   syntax: "<color>";
-  inherits: false;
+  inherits: true;
   initial-value: rgb(226, 217, 199);
 }
 
 @property --alternative-color {
   syntax: "<color>";
-  inherits: false;
+  inherits: true;
   initial-value: rgb(201, 204, 180);
 }
 
 @property --text-color {
   syntax: "<color>";
-  inherits: false;
+  inherits: true;
   initial-value: rgb(120, 184, 81);
+}
+
+:root.dark-theme {
+  --card-color: rgb(6, 70, 14); 
+  --main-color: rgb(31, 34, 31); 
+  --alternative-color: rgb(58, 70, 52); 
+  --paragraph-color: lightgrey;
+  --white-color: grey;
+  --black-color: white;
+  --grey-color: lightgrey;
 }
 
 
@@ -96,7 +110,7 @@ nav {
 }
 nav a {
   text-decoration: none;
-  color: black;
+  color: var(--paragraph-color);
   font-size: var(--base-font-size);
   margin: 0 1rem;
 }
@@ -112,7 +126,7 @@ h1, h2, h3, h4, h5, h6 {
 
 p, li, span, div, article, section, a {
   font-family: var(--content-font);
-  color: black;
+  color: var(--paragraph-color);
   font-size: var(--base-font-size);
   line-height: 1.5;
 }
@@ -128,6 +142,19 @@ article:has(header):hover, article:has(ul):hover {
   transform: translateY(-5px) scale(1.02);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
   background-color: color-mix(in srgb, var(--card-color), white 10%);
+}
+
+#darkmode_button {
+  margin: auto;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: var(--white-color);
+  color: var(--black-color);
+  border: 2px solid;
+  border-color: var(--black-color);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 #connection_method {
@@ -146,7 +173,7 @@ article:has(header):hover, article:has(ul):hover {
 }
 
 hr.dashed_border {
-  border-top: 2px dashed black;
+  border-top: 2px dashed var(--paragraph-color);
 }
 
 header.experience-header {
@@ -175,6 +202,7 @@ form {
   border: 1px solid #ccc;
   border-radius: 10px;
   font-family: var(--content-font);
+  color: var(--paragraph-color);
 }
 
 #skills {
@@ -230,9 +258,10 @@ form label {
 }
 form input,
 form textarea {
+  background-color: var(--white-color);
   border: 1px solid var(--main-color);
   border-radius: 6px;
-  width: 60%;
+  width: 80%;
 }
 
 form input:focus,
@@ -260,4 +289,32 @@ form button[type="submit"] {
 form button[type="submit"]:hover {
   background-color: rgb(95, 140, 63);
   transform: translateY(-2px);
+}
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-group(root) {
+    animation-duration: 1s;
+}
+
+
+@keyframes move-out {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
+
+@keyframes move-in {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+::view-transition-old(root) {
+    animation: 1s move-out;
+
+}
+
+::view-transition-new(root) {
+    animation: 1s move-in;
 }

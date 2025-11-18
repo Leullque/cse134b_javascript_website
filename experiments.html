@@ -14,8 +14,16 @@
       background-color: rgb(253, 239, 213);
     }
   </style>
+  <noscript>
+    <style>
+      #darkmode_button {
+        display: none;
+      }
+    </style>
+  </noscript>
   <link href="images/favicon.ico" rel="icon" />
   <link href="styles/main.css" rel="stylesheet" />
+  <script src="files/theme.js" defer></script>
   <title>Rosie Wang's personal website | Experiments</title>
 </head>
 
@@ -27,7 +35,10 @@
         <a href="projects.html">Projects</a>
         <a href="contact.html">Contact</a>
     </nav>
-    <p style="font-family: 'HandwrittenMarker', sans-serif;">Rosie Wang</p>
+    <section id="settings" style="display: flex; align-items: right; gap: 1rem;">
+      <button id="darkmode_button">dark</button>
+      <p style="font-family: 'HandwrittenMarker', sans-serif; white-space: nowrap;">Rosie Wang</p>
+    </section>
   </header>
   <main>
     <h1>Experiments for full credit</h1>

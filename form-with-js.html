@@ -12,26 +12,66 @@
         }
         form p#error-message {
             color: red;
+            min-height: 1.5rem;
+            padding: 0;
         }
         form p#info-message {
             color: var(--text-color);
+            min-height: 1.5rem;
+            padding: 0;
+        }
+        form p#char-counts {
+            font-size: 0.8rem;
+            color: var(--paragraph-color);
+            margin-top: -1rem;
+            text-align: right;
         }
         input, textarea {
             border: 1px solid var(--main-color);
             border-radius: 6px;
-            width: 60%;
+            color: var(--black-color);
+        }
+        input::placeholder, textarea::placeholder {
+            color: var(--grey-color);
         }
         input:user-invalid, textarea:user-invalid {
             border: 1px solid red;
             border-radius: 6px;
-            width: 60%;
+        }
+        .flash {
+            animation: flash-red 0.5s ease;
+        }
+        .warning {
+            border-color: orange;
+        }
+        .warning:focus {
+            border-color: orange !important; 
+            outline: orange;
+            box-shadow: 0 0 5px orange;
+        }
+
+        @keyframes flash-red {
+            0%   { background-color: #da7777; }
+            100% { background-color: white; }
         }
     </style>
+    <noscript>
+        <style>
+        #darkmode_button {
+            display: none;
+        }
+        </style>
+    </noscript>
+    <script src="files/theme.js" defer></script>
     <title>Contact table</title>
 </head>
 <body>
     <header>
         <p>Contact</p>
+        <section id="settings" style="display: flex; align-items: right; gap: 1rem;">
+        <button id="darkmode_button">dark</button>
+        <p style="font-family: 'HandwrittenMarker', sans-serif; white-space: nowrap;">Rosie Wang</p>
+        </section>
     </header>
     <main>
         <h1>Contact Form</h1>
@@ -45,11 +85,13 @@
             </label>
             
             <label for="comment">Comments:
-                <textarea id="comment" name="comment" required minlength="5" maxlength="1000" placeholder="Enter your message here..."></textarea>
+                <textarea id="comment" name="comment" required minlength="5" maxlength="500" placeholder="Enter your message here..."></textarea>
+                <p id="char-counts">/500</p>
             </label>
+            <input type="hidden" id="form-errors" name="form-errors" value="">
             <input type="hidden" name="possible_bot" value="true">
-            <p id="error-message">error-message</p>
-            <p id="info-message">info-message</p>
+            <p id="error-message"></p>
+            <p id="info-message"></p>
             <button type="submit">Send</button>
         </form>
 
@@ -59,4 +101,85 @@
         <p>&copy; 2025 <span id="LegalIdentification">Rosie Wang</span>, All Right Reserved</p>
     </footer>
 </body>
+
+<script>
+    const form = document.getElementById("contact");
+    const name = document.getElementById("name");
+    const email = document.getElementById("email");
+    const comment = document.getElementById("comment");
+    const fields = [name, email, comment];
+
+    const errorMessage = document.getElementById("error-message");
+    const infoMessage = document.getElementById("info-message");
+    const charCounts = document.getElementById("char-counts");
+    const formErrors = document.getElementById("form-errors");
+
+    function flashField(field) {
+        field.classList.remove("flash");
+        void field.offsetWidth;
+
+        field.classList.add("flash");
+    }
+
+    let errorTimeout;
+    name.addEventListener("input", (e) => {
+        if (name.validity.patternMismatch) {
+            name.setCustomValidity("Illegal character!");
+            flashField(name);
+            errorMessage.textContent = "Contains illegal characters!";
+            if (errorTimeout) {
+                clearTimeout(errorTimeout);
+            }
+            errorTimeout = setTimeout(() => {
+                errorMessage.textContent = "";
+            }, 15000);
+        } 
+        else {
+            name.setCustomValidity("");
+        }
+    });
+    comment.addEventListener("input", () => {
+        const max = comment.maxLength;
+        const remaining = max - comment.value.length;
+
+        charCounts.textContent = `${remaining}/${max}`;
+
+        if (remaining <= 20) {
+            comment.classList.add("warning");
+            infoMessage.textContent = "You are approaching comment characters limit.";
+        } else {
+            comment.classList.remove("warning");
+        }
+    });
+    let form_errors = [];
+    fields.forEach(field => {
+        field.addEventListener("invalid", (e) => {
+            form_errors.push({
+                field: field.name,
+                value: field.value,
+                message: field.validationMessage
+            });
+        });
+    });
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let cur_errors = [];
+        fields.forEach((field) => {
+            if (!field.checkValidity()) {
+                cur_errors.push({
+                    field: field.name,
+                    value: field.value,
+                    message: field.validationMessage
+                });
+            }
+        });
+        
+        if (cur_errors.length > 0) {
+            return;
+        } else {
+            formErrors.value = JSON.stringify(form_errors);
+            form.submit();
+        }
+    });
+</script>
 </html>

@@ -7,13 +7,13 @@
     my-receipt{
       display: block;
       text-align: center;
-      background-color: white;
+      background-color: var(--white-color);
       width: 300px; 
       margin: 1rem 0rem;
       height: fit-content;
       padding: 1rem;
       font-family: 'ReceiptContentFont', sans-serif;
-      color: black;
+      color: var(--paragraph-color);
     }
     my-receipt p {
       font-family: 'ReceiptContentFont', sans-serif;
@@ -41,8 +41,16 @@
       margin-left: 8px;
     }
   </style>
+  <noscript>
+    <style>
+      #darkmode_button {
+        display: none;
+      }
+    </style>
+  </noscript>
   <link href="images/favicon.ico" rel="icon"/>
   <link href="styles/main.css" rel="stylesheet" />
+  <script src="files/theme.js" defer></script>
   <title>Rosie Wang's personal website</title>
 </head>
 
@@ -54,7 +62,10 @@
         <a href="projects.html">Projects</a>
         <a href="contact.html">Contact</a>
     </nav>
-    <p style="font-family: 'HandwrittenMarker', sans-serif; white-space: nowrap;">Rosie Wang</p>
+    <section id="settings" style="display: flex; align-items: right; gap: 1rem;">
+      <button id="darkmode_button">dark</button>
+      <p style="font-family: 'HandwrittenMarker', sans-serif; white-space: nowrap;">Rosie Wang</p>
+    </section>
   </header>
   <main style="width: 70%; max-width: 900px; margin: 0rem auto; display: flex; flex-direction: column;">
     <h1>Rosie Wang</h1>
@@ -81,7 +92,7 @@
     </h2>
     <section id="content" style="display: flex; flex-direction: row; gap: 1.1rem; flex-wrap: wrap;">
       <my-receipt>
-        <h2 style="font-family: 'ReceiptTitleFont', sans-serif; color: black;">Rosie's Snapshot</h2>
+        <h2 style="font-family: 'ReceiptTitleFont', sans-serif; color: var(--paragraph-color);">Rosie's Snapshot</h2>
         <p>A Software Engineer & Data Scientist</p>
         <hr class="dashed_border">
         <section class="receipt_sections">
